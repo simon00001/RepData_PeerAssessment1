@@ -1,11 +1,19 @@
 ---
 title: "Reproducible Research: Peer Assessment 1"
-=================================================
-output: html_document: keep_md: true
+author: "Simon Kong"
+date: "October 16, 2015"
+output: html_document
+keep_md: true
 ---
+This assignment is part of the Coursera Reproducible Research Module of Data Science. 
 
+This assignment makes use of data from a personal activity monitoring device. This device collects data at 5 minute intervals through out the day. The data consists of two months of data from an anonymous individual collected during the months of October and November, 2012 and include the number of steps taken in 5 minute intervals each day.
+
+The data is contained in the course web site  
 
 ## Loading and preprocessing the data
+
+Lets set the working directory and data ready
 
 ```r
 echo = TRUE  # Always make code visible
@@ -56,9 +64,9 @@ ggplot(noNA, aes(date, steps)) + geom_bar(stat = "identity", colour = "steelblue
 
 ![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1-1.png) 
 ## What is mean total number of steps taken per day?
+Calculate and showing the ***total number of steps taken per day***
 
 ```r
-## Calculate the total number of steps taken per day
 ## Calculate and report the mean and median of the total number of steps taken per day
 totalSteps <- aggregate(noNA$steps, list(Date = noNA$date), FUN = "sum")$x
 mean(totalSteps)
@@ -76,6 +84,7 @@ median(totalSteps)
 ## [1] 10765
 ```
 ## What is the average daily activity pattern?
+For this question we will disregard the NA's by removing them from the data frame. 
 
 ```r
 ## show the average daily activity pattern
@@ -98,8 +107,9 @@ sum(is.na(data))
 ## [1] 2304
 ```
 
+Devise a strategy for filling in all of the missing values in the dataset using mean/median for that day, or the mean for that 5-minute interval, etc.
+
 ```r
-# Devise a strategy for filling in all of the missing values in the dataset using mean/median for that day, or the mean for that 5-minute interval, etc.
 ## Create a new dataset that is equal to the original dataset but with the missing data filled in.
 newData <- data 
 for (i in 1:nrow(newData)) {
@@ -128,20 +138,24 @@ sum(is.na(newData))
 ```
 ## [1] 0
 ```
+# Plot a histogram of the total number of steps taken each day 
+A histogram plots the frequency of a variable. In our case we want to plot a histogram of the total number of steps per day. 
+
+We use the output of **ggplot()** to plot the result.
+
 
 ```r
-# Plot a histogram of the total number of steps taken each day 
 ggplot(newData, aes(date, steps)) + geom_bar(stat = "identity",
                                              colour = "steelblue",
                                              fill = "steelblue",
                                              width = 0.7) + facet_grid(. ~ month, scales = "free") + labs(title = "Histogram of Total Number of Steps Taken Each Day (no missing data)", x = "Date", y = "Total number of steps")
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png) 
 ## Are there differences in activity patterns between weekdays and weekends?
+Calculate and report the new mean and median total number of steps taken per day. 
 
 ```r
-# Calculate and report the new mean and median total number of steps taken per day. 
 newTotalSteps <- aggregate(newData$steps, 
                            list(Date = newData$date), 
                            FUN = "sum")$x
@@ -252,12 +266,18 @@ avgSteps <- aggregate(newData$steps,
 names(avgSteps)[3] <- "meanOfSteps"
 
 library(lattice)
+```
+Ploat a panel with time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). 
 
-## Ploat a panel with time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). 
+Based on the graphs above there is a clear difference in activity between weekday and weekend   
+1. The number of steps is higher at the busiest interval   
+2. The peaks are better defined during the weekday  
 
+```r
 xyplot(avgSteps$meanOfSteps ~ avgSteps$interval | avgSteps$weekdays, 
        layout = c(1, 2), type = "l", 
        xlab = "Interval", ylab = "Number of steps")
 ```
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png) 
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
+ 
