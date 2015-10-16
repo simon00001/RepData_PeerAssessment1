@@ -20,7 +20,6 @@ echo = TRUE  # Always make code visible
 options(scipen = 1)  # Turn off scientific notations for number
 
 ## Set working directory
-## setwd("C:\Users\sy.kong\Documents\GitHub\RepData_PeerAssessment1")
 unzip("activity.zip")
 data <- read.csv("activity.csv", colClasses = c("integer", "Date", "factor"))
 data$month <- as.numeric(format(data$date, "%m"))

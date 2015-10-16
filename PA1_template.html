@@ -193,7 +193,6 @@ hljs.initHighlightingOnLoad();
 options(scipen = 1)  # Turn off scientific notations for number
 
 ## Set working directory
-## setwd(&quot;C:\Users\sy.kong\Documents\GitHub\RepData_PeerAssessment1&quot;)
 unzip(&quot;activity.zip&quot;)
 data &lt;- read.csv(&quot;activity.csv&quot;, colClasses = c(&quot;integer&quot;, &quot;Date&quot;, &quot;factor&quot;))
 data$month &lt;- as.numeric(format(data$date, &quot;%m&quot;))
